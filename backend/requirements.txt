@@ -15,8 +15,9 @@ fastembed>=0.4.0
 # Vector DB
 sqlite-vec>=0.1.6
 
-# Graph DB
-kuzu>=0.8.0
+# Graph DB — PIN exact version: the committed data/graphdb file is written in
+# kuzu 0.11.3's storage format and a different version cannot read it.
+kuzu==0.11.3
 
 # Data processing
 numpy>=1.26.0
