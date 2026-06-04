@@ -19,7 +19,7 @@ COPY data/ ./data/
 # is platform-specific and won't open on Linux, so we regenerate it here from
 # the corpus PDFs + the committed extraction cache. No API key / LLM calls are
 # needed (every chunk is already cached); the embedding model is pre-baked above.
-RUN python scripts/ingest_corpus.py
+RUN python scripts/ingest_corpus.py --glob "*.pdf"
 
 EXPOSE 8000
 
