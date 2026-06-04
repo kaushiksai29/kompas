@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 520" font-family="'IBM Plex Sans','Helvetica Neue',Arial,sans-serif">
+  <defs>
+    <marker id="ah" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+      <path d="M0,0 L7,3 L0,6" fill="none" stroke="#20262b" stroke-width="1.1"/>
+    </marker>
+    <style>
+      .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; }
+      .lbl  { font-family: 'IBM Plex Mono', ui-monospace, monospace; fill:#8b9197; letter-spacing:.12em; }
+      .ttl  { fill:#16191c; }
+      .txt  { fill:#474c51; }
+      .mut  { fill:#8b9197; }
+    </style>
+  </defs>
+
+  <rect width="880" height="520" fill="#eef0f1"/>
+
+  <!-- header -->
+  <text x="40" y="46" class="mono ttl" font-size="19" letter-spacing=".04em">DUAL-CHANNEL RETRIEVAL</text>
+  <text x="40" y="68" class="txt" font-size="13">How KOMPAS answers a multi-hop question naive RAG would miss.</text>
+  <line x1="40" y1="82" x2="840" y2="82" stroke="#20262b" stroke-opacity="0.16"/>
+
+  <!-- query -->
+  <rect x="310" y="104" width="260" height="58" fill="#ffffff" stroke="#20262b" stroke-width="1.2" rx="2"/>
+  <text x="324" y="124" class="lbl" font-size="9">QUERY</text>
+  <text x="324" y="146" class="ttl" font-size="13.5">“adjust status through marriage”</text>
+
+  <!-- split connectors -->
+  <polyline points="440,162 440,186 230,186 230,212" fill="none" stroke="#20262b" stroke-width="1.1" marker-end="url(#ah)"/>
+  <polyline points="440,162 440,186 650,186 650,212" fill="none" stroke="#20262b" stroke-width="1.1" marker-end="url(#ah)"/>
+
+  <!-- semantic channel -->
+  <rect x="64" y="212" width="332" height="184" fill="#ffffff" stroke="#20262b" stroke-width="1.2" rx="2"/>
+  <text x="82" y="240" class="mono ttl" font-size="12" font-weight="600">SEMANTIC CHANNEL</text>
+  <text x="82" y="257" class="mut" font-size="11">vector search — matches by meaning</text>
+  <text x="82" y="288" class="mono txt" font-size="11">1 · embed query — bge-small</text>
+  <text x="82" y="309" class="mono txt" font-size="11">2 · top-k similar chunks — sqlite-vec</text>
+  <rect x="82" y="328" width="296" height="46" fill="#f6f7f8" stroke="#20262b" stroke-opacity="0.18" rx="2"/>
+  <text x="94" y="346" class="lbl" font-size="8.5">RETURNS</text>
+  <text x="94" y="364" class="ttl" font-size="12">I-485 instructions — reads like the query</text>
+
+  <!-- structural channel -->
+  <rect x="484" y="212" width="332" height="184" fill="#ffffff" stroke="#20262b" stroke-width="1.4" rx="2"/>
+  <text x="502" y="240" class="mono ttl" font-size="12" font-weight="600">STRUCTURAL CHANNEL</text>
+  <text x="502" y="257" class="mut" font-size="11">typed knowledge graph — Kùzu</text>
+  <text x="502" y="288" class="mono txt" font-size="11">1 · match entities in the query</text>
+  <text x="502" y="309" class="mono txt" font-size="11">2 · walk typed edges — requires, filed_with…</text>
+  <rect x="502" y="328" width="296" height="46" fill="#20262b" rx="2"/>
+  <text x="514" y="346" class="lbl" font-size="8.5" fill="#9aa0a6">RETURNS — THE LIFT</text>
+  <text x="514" y="364" class="mono" font-size="11.5" fill="#ffffff">I-864 + I-693 — prerequisites vector missed</text>
+
+  <!-- merge connectors -->
+  <polyline points="230,396 230,422 380,422 380,440" fill="none" stroke="#20262b" stroke-width="1.1" marker-end="url(#ah)"/>
+  <polyline points="650,396 650,422 500,422 500,440" fill="none" stroke="#20262b" stroke-width="1.1" marker-end="url(#ah)"/>
+
+  <!-- merge -->
+  <rect x="310" y="440" width="260" height="54" fill="#ffffff" stroke="#20262b" stroke-width="1.2" rx="2"/>
+  <text x="324" y="462" class="mono ttl" font-size="11" font-weight="600">MERGE · RANK · CITE</text>
+  <text x="324" y="481" class="txt" font-size="11.5">grounded answer, linked to the source</text>
+
+  <!-- caption -->
+  <text x="40" y="512" class="txt" font-size="11">Typed, cross-document edges reach forms living in *other* files — the structural lift a plain vector search cannot make.</text>
+</svg>

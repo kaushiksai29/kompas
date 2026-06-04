@@ -1,0 +1,33 @@
+{
+  "description": "Hand-built multi-hop QA set for US immigration GraphRAG. 'gold_forms' are the USCIS forms a correct, complete answer must reference. Multi-hop questions require connecting forms across documents (e.g. an I-485 answer must surface I-864/I-693), which is where typed-graph retrieval is expected to beat naive vector RAG.",
+  "questions": [
+    {"id": "fam-01", "question": "I am adjusting status based on marriage to a U.S. citizen. Which forms and supporting documents do I need to file?", "gold_forms": ["I-130", "I-485", "I-864", "I-693"], "category": "family", "hops": "multi"},
+    {"id": "fam-02", "question": "Can I apply for a work permit while my green card application through adjustment of status is pending, and which form do I use?", "gold_forms": ["I-765", "I-485"], "category": "family", "hops": "multi"},
+    {"id": "fam-03", "question": "Can I travel outside the United States while my adjustment of status application is pending without abandoning it?", "gold_forms": ["I-131", "I-485"], "category": "family", "hops": "multi"},
+    {"id": "fam-04", "question": "How does a U.S. citizen petition for a foreign spouse to immigrate?", "gold_forms": ["I-130"], "category": "family", "hops": "single"},
+    {"id": "fam-05", "question": "Who has to file an Affidavit of Support for a family-based green card and on which form?", "gold_forms": ["I-864", "I-485"], "category": "family", "hops": "multi"},
+    {"id": "fam-06", "question": "Is a medical examination required for a green card, and what form documents it?", "gold_forms": ["I-693", "I-485"], "category": "family", "hops": "multi"},
+    {"id": "fam-07", "question": "When petitioning for a spouse, is there an extra supplemental form about the beneficiary that must be included?", "gold_forms": ["I-130A", "I-130"], "category": "family", "hops": "multi"},
+    {"id": "fam-08", "question": "I want both a work permit and advance parole travel document while my adjustment application is pending. Which forms cover that?", "gold_forms": ["I-765", "I-131", "I-485"], "category": "family", "hops": "multi"},
+    {"id": "fam-09", "question": "What evidence of the petitioner's U.S. citizenship is needed to support a relative petition?", "gold_forms": ["I-130"], "category": "family", "hops": "single"},
+    {"id": "fam-10", "question": "If my household income is too low to meet the Affidavit of Support requirement, is there a joint-sponsor or contract form involved?", "gold_forms": ["I-864", "I-864A"], "category": "family", "hops": "multi"},
+    {"id": "fam-11", "question": "As an immediate relative already in the U.S., what is the application to become a permanent resident and what must accompany it?", "gold_forms": ["I-485", "I-693", "I-864"], "category": "family", "hops": "multi"},
+    {"id": "fam-12", "question": "Who is eligible to file Form I-485 and what underlying petition is generally required first?", "gold_forms": ["I-485", "I-130"], "category": "family", "hops": "multi"},
+    {"id": "fam-13", "question": "What is advance parole and which form do I file to request it?", "gold_forms": ["I-131"], "category": "family", "hops": "single"},
+    {"id": "fam-14", "question": "Do my dependent children need their own adjustment of status applications and medical exams?", "gold_forms": ["I-485", "I-693"], "category": "family", "hops": "multi"},
+    {"id": "emp-01", "question": "My employer wants to sponsor me for an employment-based green card. Which immigrant petition form is used?", "gold_forms": ["I-140"], "category": "employment", "hops": "single"},
+    {"id": "emp-02", "question": "How can I request faster processing of my employer's immigrant worker petition?", "gold_forms": ["I-907", "I-140"], "category": "employment", "hops": "multi"},
+    {"id": "emp-03", "question": "After my I-140 immigrant petition is approved, how do I get my green card from inside the U.S.?", "gold_forms": ["I-485", "I-140"], "category": "employment", "hops": "multi"},
+    {"id": "emp-04", "question": "Which form does an employer file to sponsor an H-1B specialty-occupation worker?", "gold_forms": ["I-129"], "category": "employment", "hops": "single"},
+    {"id": "emp-05", "question": "Can H-1B petitions use premium processing and which form requests it?", "gold_forms": ["I-907", "I-129"], "category": "employment", "hops": "multi"},
+    {"id": "emp-06", "question": "As an employment-based adjustment applicant, can I get an Employment Authorization Document while I wait?", "gold_forms": ["I-765", "I-485"], "category": "employment", "hops": "multi"},
+    {"id": "emp-07", "question": "What forms are involved in concurrently filing an employment-based petition and adjustment of status?", "gold_forms": ["I-140", "I-485"], "category": "employment", "hops": "multi"},
+    {"id": "emp-08", "question": "Does an employment-based green card applicant also need a medical examination form?", "gold_forms": ["I-693", "I-485"], "category": "employment", "hops": "multi"},
+    {"id": "emp-09", "question": "What evidence must accompany an H-1B petition to show the beneficiary's qualifications and the employer's ability to pay?", "gold_forms": ["I-129"], "category": "employment", "hops": "single"},
+    {"id": "gen-01", "question": "What is the immigration medical examination form and who must complete and sign it?", "gold_forms": ["I-693"], "category": "general", "hops": "single"},
+    {"id": "gen-02", "question": "Which form is used to apply for employment authorization, and what categories can use it?", "gold_forms": ["I-765"], "category": "general", "hops": "single"},
+    {"id": "gen-03", "question": "I have a pending green card case and need both to work and to travel for an emergency. Which applications do I file and can they be combined?", "gold_forms": ["I-765", "I-131", "I-485"], "category": "general", "hops": "multi"},
+    {"id": "gen-04", "question": "What is required to show I am admissible and free of health-related grounds when applying to adjust status?", "gold_forms": ["I-693", "I-485"], "category": "general", "hops": "multi"},
+    {"id": "gen-05", "question": "I am the principal applicant adjusting status; what supporting financial and medical forms are filed together with my application?", "gold_forms": ["I-485", "I-864", "I-693"], "category": "general", "hops": "multi"}
+  ]
+}

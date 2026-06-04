@@ -1,0 +1,25 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+
+# Data artifacts (rebuildable; large)
+data/graphdb
+data/graphdb.wal
+data/vectorstore.db
+data/sources/**/*.pdf
+data/cache/
+data/backend.log
+
+# Node / Next
+node_modules/
+.next/
+frontend/node_modules/
+frontend/.next/
+
+# OS
+.DS_Store
+Thumbs.db

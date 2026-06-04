@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: graphrag-backend
+    runtime: docker
+    env: docker
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
