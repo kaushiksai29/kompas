@@ -109,8 +109,6 @@ def main() -> int:
     print(f"Vector store now holds {vdb.count()} chunks.\n")
 
     # ── 3. Extract entities + relations (cached + concurrent) ─────────────────
-    client = create_fallback_client(settings)
-    extractor = EntityExtractor(client)
     cache = load_cache()
 
     results: dict[str, ExtractionResult] = {}
@@ -127,22 +125,31 @@ def main() -> int:
           f"(concurrency={args.concurrency}) ...")
 
     if to_extract:
-        t0 = time.time()
-        new = asyncio.run(
-            extractor.extract_from_chunks_async(
-                to_extract,
-                concurrency=args.concurrency,
-                progress_cb=lambda d, t: print(f"  ... {d}/{t} extracted", flush=True),
+        # Only *uncached* chunks need the LLM. A from-cache rebuild (e.g. the
+        # container image build, which has no API key) skips this gracefully.
+        try:
+            client = create_fallback_client(settings)
+            extractor = EntityExtractor(client)
+            t0 = time.time()
+            new = asyncio.run(
+                extractor.extract_from_chunks_async(
+                    to_extract,
+                    concurrency=args.concurrency,
+                    progress_cb=lambda d, t: print(f"  ... {d}/{t} extracted", flush=True),
+                )
             )
-        )
-        for c in to_extract:
-            r = new.get(c.chunk_id, ExtractionResult())
-            results[c.chunk_id] = r
-            doc_ctx = _form_label_from_filepath(c.filepath) or ""
-            cache[_cache_key(doc_ctx, c.content)] = r.model_dump(mode="json")
-        save_cache(cache)
-        print(f"Extraction done in {time.time() - t0:.0f}s "
-              f"({len(to_extract)} new calls).\n")
+            for c in to_extract:
+                r = new.get(c.chunk_id, ExtractionResult())
+                results[c.chunk_id] = r
+                doc_ctx = _form_label_from_filepath(c.filepath) or ""
+                cache[_cache_key(doc_ctx, c.content)] = r.model_dump(mode="json")
+            save_cache(cache)
+            print(f"Extraction done in {time.time() - t0:.0f}s "
+                  f"({len(to_extract)} new calls).\n")
+        except Exception as e:  # noqa: BLE001
+            print(f"  ! extraction unavailable ({str(e)[:80]}); using cache only.")
+            for c in to_extract:
+                results.setdefault(c.chunk_id, ExtractionResult())
 
     ent_total = sum(len(r.entities) for r in results.values())
     rel_total = sum(len(r.relations) for r in results.values())

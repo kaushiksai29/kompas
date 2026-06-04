@@ -10,15 +10,16 @@ RUN pip install --no-cache-dir -r backend/requirements.txt
 # (no cold-start fetch from HuggingFace on the first request).
 RUN python -c "from fastembed import TextEmbedding; TextEmbedding('BAAI/bge-small-en-v1.5')"
 
-# Copy application code
+# Copy application code + the corpus (PDFs) and extraction cache
 COPY backend/ ./backend/
-
-# NOTE: data/ (Kùzu graph + sqlite-vec store) is .gitignored and built offline.
-# The image therefore needs a prebuilt data/ directory present at build time.
-# Either build data/ locally before `docker build`, or run the ingest step here, e.g.:
-#   COPY scripts/ ./scripts/
-#   RUN python scripts/ingest_corpus.py
+COPY scripts/ ./scripts/
 COPY data/ ./data/
+
+# Build a NATIVE graph + vector store inside the image. The committed Kùzu DB
+# is platform-specific and won't open on Linux, so we regenerate it here from
+# the corpus PDFs + the committed extraction cache. No API key / LLM calls are
+# needed (every chunk is already cached); the embedding model is pre-baked above.
+RUN python scripts/ingest_corpus.py
 
 EXPOSE 8000
 

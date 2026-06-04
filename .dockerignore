@@ -5,4 +5,9 @@ frontend
 .git
 .next
 *.log
-data/sources/**/*.pdf
+# The committed graph/vector DBs are platform-specific (Kùzu files are not
+# cross-OS portable). Keep them out of the image — it rebuilds them natively
+# from the corpus PDFs + the extraction cache (see Dockerfile).
+data/graphdb
+data/graphdb.wal
+data/vectorstore.db
