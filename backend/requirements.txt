@@ -9,8 +9,8 @@ PyMuPDF>=1.25.0
 beautifulsoup4>=4.12.0
 lxml>=5.0.0
 
-# Embeddings
-sentence-transformers>=3.0.0
+# Embeddings (ONNX via fastembed — no PyTorch, keeps the image small)
+fastembed>=0.4.0
 
 # Vector DB
 sqlite-vec>=0.1.6

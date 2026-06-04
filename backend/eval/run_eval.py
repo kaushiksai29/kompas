@@ -248,9 +248,9 @@ def main() -> int:
     questions = qa["questions"]
 
     settings = get_settings()
-    from sentence_transformers import SentenceTransformer
-    model = SentenceTransformer(settings.embedding_model)
-    emb = lambda t: model.encode(t, normalize_embeddings=True).tolist()
+    from backend.embeddings import embed_one, load
+    load()
+    emb = embed_one
     vdb = VectorDB(db_path=str(settings.resolved_sqlite_path), embedding_dim=384)
     gdb = GraphDB(db_path=str(settings.resolved_kuzu_path))
     client = create_fallback_client(settings)

@@ -58,17 +58,12 @@ state = AppState()
 
 
 def _load_embedding_model():
-    """Load the local sentence-transformers embedding model."""
-    from sentence_transformers import SentenceTransformer
-    
-    model_name = state.settings.embedding_model
-    logger.info(f"Loading embedding model: {model_name}")
-    model = SentenceTransformer(model_name)
-    
-    def embed(text: str) -> list[float]:
-        return model.encode(text, normalize_embeddings=True).tolist()
-    
-    return embed
+    """Load the local fastembed (ONNX) embedding model — no PyTorch."""
+    from backend.embeddings import embed_one, load
+
+    logger.info(f"Loading embedding model: {state.settings.embedding_model}")
+    load()
+    return embed_one
 
 
 @asynccontextmanager

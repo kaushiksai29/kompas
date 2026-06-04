@@ -87,22 +87,21 @@ def main() -> int:
     print(f"Total clean chunks: {len(chunks)}\n")
 
     # ── 2. Embed + store vectors ──────────────────────────────────────────────
-    print("Loading embedding model (bge-small) ...")
-    from sentence_transformers import SentenceTransformer
+    print("Loading embedding model (bge-small, fastembed/ONNX) ...")
+    from backend.embeddings import embed_many, load
 
-    model = SentenceTransformer(settings.embedding_model)
+    load()
     vdb = VectorDB(db_path=str(settings.resolved_sqlite_path), embedding_dim=384)
 
     print(f"Embedding {len(chunks)} chunks ...")
-    texts = [c.content for c in chunks]
-    embeddings = model.encode(texts, normalize_embeddings=True, batch_size=32, show_progress_bar=False)
+    embeddings = embed_many([c.content for c in chunks])
     for c, emb in zip(chunks, embeddings):
         vdb.insert_chunk(
             chunk_id=c.chunk_id,
             filepath=c.filepath,
             heading_path=c.heading_path,
             content=c.content,
-            embedding=emb.tolist(),
+            embedding=emb,
             char_start=c.char_start,
             char_end=c.char_end,
             metadata=c.metadata,

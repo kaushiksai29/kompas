@@ -6,6 +6,10 @@ WORKDIR /app
 COPY backend/requirements.txt ./backend/requirements.txt
 RUN pip install --no-cache-dir -r backend/requirements.txt
 
+# Pre-download the ONNX embedding model so the image is self-contained
+# (no cold-start fetch from HuggingFace on the first request).
+RUN python -c "from fastembed import TextEmbedding; TextEmbedding('BAAI/bge-small-en-v1.5')"
+
 # Copy application code
 COPY backend/ ./backend/
 

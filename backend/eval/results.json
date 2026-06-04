@@ -5,24 +5,24 @@
   },
   "aggregate": {
     "retrieval_recall": {
-      "hybrid": 0.925595238095238,
+      "hybrid": 0.9077380952380951,
       "naive": 0.818452380952381
     },
     "doc_recall": {
-      "hybrid": 0.8452380952380951,
+      "hybrid": 0.8095238095238094,
       "naive": 0.7797619047619049
     },
     "answer_recall": {
-      "hybrid": 0.925595238095238,
-      "naive": 0.8988095238095237
+      "hybrid": 0.9613095238095237,
+      "naive": 0.8898809523809523
     },
     "citation_precision": {
-      "hybrid": 0.6875,
+      "hybrid": 0.6741071428571429,
       "naive": 0.7008928571428571
     },
     "judge_accuracy": {
-      "hybrid": 0.875,
-      "naive": 0.8667857142857144
+      "hybrid": 0.9089285714285715,
+      "naive": 0.8517857142857146
     }
   },
   "rows": [
@@ -42,16 +42,16 @@
           "doc_recall": 0.5,
           "answer_recall": 0.75,
           "citation_precision": 0.5,
-          "judge_accuracy": 0.8,
+          "judge_accuracy": 0.75,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 35
+          "subgraph_nodes": 29
         },
         "naive": {
           "retrieval_recall": 0.75,
           "doc_recall": 0.5,
-          "answer_recall": 0.5,
+          "answer_recall": 0.75,
           "citation_precision": 0.5,
-          "judge_accuracy": 0.6,
+          "judge_accuracy": 0.75,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -70,7 +70,7 @@
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 0.8125,
+          "citation_precision": 0.75,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
           "subgraph_nodes": 20
@@ -96,10 +96,10 @@
       ],
       "modes": {
         "hybrid": {
-          "retrieval_recall": 0.5,
+          "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 1.0,
+          "citation_precision": 0.8125,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
           "subgraph_nodes": 6
@@ -127,10 +127,10 @@
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 0.25,
-          "judge_accuracy": 0.8,
+          "citation_precision": 0.3125,
+          "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 60
+          "subgraph_nodes": 20
         },
         "naive": {
           "retrieval_recall": 1.0,
@@ -155,8 +155,8 @@
         "hybrid": {
           "retrieval_recall": 0.5,
           "doc_recall": 1.0,
-          "answer_recall": 0.5,
-          "citation_precision": 0.75,
+          "answer_recall": 1.0,
+          "citation_precision": 0.8125,
           "judge_accuracy": 0.8,
           "n_graph_chunks": 8,
           "subgraph_nodes": 21
@@ -212,12 +212,12 @@
       "modes": {
         "hybrid": {
           "retrieval_recall": 0.5,
-          "doc_recall": 0.5,
+          "doc_recall": 0.0,
           "answer_recall": 0.5,
-          "citation_precision": 0.0625,
+          "citation_precision": 0.0,
           "judge_accuracy": 0.5,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 50
+          "subgraph_nodes": 49
         },
         "naive": {
           "retrieval_recall": 0.5,
@@ -247,14 +247,14 @@
           "citation_precision": 1.0,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 21
+          "subgraph_nodes": 20
         },
         "naive": {
           "retrieval_recall": 0.3333333333333333,
           "doc_recall": 0.6666666666666666,
           "answer_recall": 1.0,
           "citation_precision": 1.0,
-          "judge_accuracy": 1.0,
+          "judge_accuracy": 0.8,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -272,17 +272,17 @@
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 0.1875,
+          "citation_precision": 0.25,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 3
+          "subgraph_nodes": 4
         },
         "naive": {
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
           "citation_precision": 0.125,
-          "judge_accuracy": 0.8,
+          "judge_accuracy": 1.0,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -301,10 +301,10 @@
           "retrieval_recall": 1.0,
           "doc_recall": 0.5,
           "answer_recall": 1.0,
-          "citation_precision": 1.0,
+          "citation_precision": 0.9375,
           "judge_accuracy": 0.8,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 20
+          "subgraph_nodes": 23
         },
         "naive": {
           "retrieval_recall": 1.0,
@@ -360,15 +360,15 @@
           "retrieval_recall": 1.0,
           "doc_recall": 0.5,
           "answer_recall": 1.0,
-          "citation_precision": 0.75,
-          "judge_accuracy": 0.8,
+          "citation_precision": 0.875,
+          "judge_accuracy": 0.6,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 31
+          "subgraph_nodes": 30
         },
         "naive": {
           "retrieval_recall": 0.5,
           "doc_recall": 0.5,
-          "answer_recall": 1.0,
+          "answer_recall": 0.5,
           "citation_precision": 1.0,
           "judge_accuracy": 0.8,
           "n_graph_chunks": 0,
@@ -391,7 +391,7 @@
           "citation_precision": 0.6875,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 13
+          "subgraph_nodes": 12
         },
         "naive": {
           "retrieval_recall": 1.0,
@@ -415,12 +415,12 @@
       "modes": {
         "hybrid": {
           "retrieval_recall": 1.0,
-          "doc_recall": 1.0,
+          "doc_recall": 0.5,
           "answer_recall": 1.0,
-          "citation_precision": 0.9375,
+          "citation_precision": 0.875,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 2
+          "subgraph_nodes": 3
         },
         "naive": {
           "retrieval_recall": 1.0,
@@ -446,7 +446,7 @@
           "doc_recall": 0.0,
           "answer_recall": 1.0,
           "citation_precision": 0.0,
-          "judge_accuracy": 0.5,
+          "judge_accuracy": 0.8,
           "n_graph_chunks": 8,
           "subgraph_nodes": 37
         },
@@ -455,7 +455,7 @@
           "doc_recall": 0.0,
           "answer_recall": 1.0,
           "citation_precision": 0.0,
-          "judge_accuracy": 0.2,
+          "judge_accuracy": 0.8,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -473,18 +473,18 @@
         "hybrid": {
           "retrieval_recall": 1.0,
           "doc_recall": 0.5,
-          "answer_recall": 0.5,
+          "answer_recall": 1.0,
           "citation_precision": 0.125,
-          "judge_accuracy": 0.5,
+          "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 47
+          "subgraph_nodes": 33
         },
         "naive": {
           "retrieval_recall": 1.0,
           "doc_recall": 0.5,
-          "answer_recall": 1.0,
+          "answer_recall": 0.5,
           "citation_precision": 0.125,
-          "judge_accuracy": 1.0,
+          "judge_accuracy": 0.6,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -513,7 +513,7 @@
           "doc_recall": 1.0,
           "answer_recall": 1.0,
           "citation_precision": 0.625,
-          "judge_accuracy": 0.8,
+          "judge_accuracy": 0.6,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -528,13 +528,13 @@
       ],
       "modes": {
         "hybrid": {
-          "retrieval_recall": 1.0,
+          "retrieval_recall": 0.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 0.5625,
+          "citation_precision": 0.4375,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 60
+          "subgraph_nodes": 50
         },
         "naive": {
           "retrieval_recall": 0.0,
@@ -563,7 +563,7 @@
           "citation_precision": 0.9375,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 60
+          "subgraph_nodes": 44
         },
         "naive": {
           "retrieval_recall": 1.0,
@@ -592,14 +592,14 @@
           "citation_precision": 0.9375,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 37
+          "subgraph_nodes": 36
         },
         "naive": {
           "retrieval_recall": 0.5,
           "doc_recall": 0.5,
           "answer_recall": 0.5,
           "citation_precision": 0.875,
-          "judge_accuracy": 0.5,
+          "judge_accuracy": 0.6,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -628,7 +628,7 @@
           "doc_recall": 0.5,
           "answer_recall": 1.0,
           "citation_precision": 0.625,
-          "judge_accuracy": 1.0,
+          "judge_accuracy": 0.6,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -647,15 +647,15 @@
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 0.9375,
+          "citation_precision": 0.875,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
-          "subgraph_nodes": 3
+          "subgraph_nodes": 13
         },
         "naive": {
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
-          "answer_recall": 0.5,
+          "answer_recall": 1.0,
           "citation_precision": 0.875,
           "judge_accuracy": 0.8,
           "n_graph_chunks": 0,
@@ -685,7 +685,7 @@
           "doc_recall": 1.0,
           "answer_recall": 1.0,
           "citation_precision": 0.875,
-          "judge_accuracy": 0.8,
+          "judge_accuracy": 0.6,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
@@ -703,7 +703,7 @@
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 0.5625,
+          "citation_precision": 0.4375,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
           "subgraph_nodes": 8
@@ -731,7 +731,7 @@
           "retrieval_recall": 1.0,
           "doc_recall": 1.0,
           "answer_recall": 1.0,
-          "citation_precision": 0.9375,
+          "citation_precision": 1.0,
           "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
           "subgraph_nodes": 32
@@ -821,7 +821,7 @@
           "doc_recall": 1.0,
           "answer_recall": 1.0,
           "citation_precision": 0.6875,
-          "judge_accuracy": 0.8,
+          "judge_accuracy": 1.0,
           "n_graph_chunks": 8,
           "subgraph_nodes": 4
         },
@@ -830,7 +830,7 @@
           "doc_recall": 1.0,
           "answer_recall": 1.0,
           "citation_precision": 0.875,
-          "judge_accuracy": 0.67,
+          "judge_accuracy": 0.6,
           "n_graph_chunks": 0,
           "subgraph_nodes": 0
         }
