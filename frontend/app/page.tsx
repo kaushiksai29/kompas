@@ -46,7 +46,19 @@ export default function Home() {
   const [stats, setStats] = useState<any>(null);
   // Evidence map hidden by default — a lawyer doesn't want it in their face.
   const [showMap, setShowMap] = useState(false);
+  // Bumping this remounts the query box so clicking "home" also clears it.
+  const [resetKey, setResetKey] = useState(0);
   const answerRef = useRef<HTMLDivElement>(null);
+
+  // Clicking the logo / wordmark returns to the landing (empty) view.
+  const goHome = useCallback(() => {
+    setResult(null);
+    setError(null);
+    setShowMap(false);
+    setHighlightedCitation(null);
+    setResetKey((k) => k + 1);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleQuery = useCallback(
     async (query: string) => {
@@ -100,7 +112,12 @@ export default function Home() {
       {/* ── Header ────────────────────────────────────────────── */}
       <header className="reveal reveal-1 px-4 sm:px-6 py-4 sm:py-5 border-b-2 border-[var(--color-border-primary)]">
         <div className="max-w-7xl mx-auto flex items-end justify-between gap-4 flex-wrap">
-          <div className="flex items-center gap-3.5">
+          <button
+            type="button"
+            onClick={goHome}
+            aria-label="KOMPAS — back to start"
+            className="flex items-center gap-3.5 text-left cursor-pointer group"
+          >
             {/* KOMPAS compass mark */}
             <img
               src="/kompas-mark.png"
@@ -111,14 +128,14 @@ export default function Home() {
               style={{ mixBlendMode: "multiply" }}
             />
             <div>
-              <h1 className="wordmark text-[26px] leading-none tracking-[0.06em]">
+              <h1 className="wordmark text-[26px] leading-none tracking-[0.06em] group-hover:text-[var(--color-accent-primary)] transition-colors">
                 KOMPAS
               </h1>
               <p className="docline mt-1.5">
                 Find your direction through US immigration
               </p>
             </div>
-          </div>
+          </button>
 
           {/* Search mode — plain words, not jargon */}
           <div className="flex items-center gap-2">
@@ -147,7 +164,7 @@ export default function Home() {
       <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-5 sm:py-6 gap-6">
         {/* Query Input */}
         <div className="reveal reveal-2">
-          <QueryPanel onSubmit={handleQuery} loading={loading} />
+          <QueryPanel key={resetKey} onSubmit={handleQuery} loading={loading} />
         </div>
 
         {/* Error */}
