@@ -10,10 +10,35 @@ interface AnswerPanelProps {
   onCitationClick: (id: string | null) => void;
 }
 
-/** Derive a clean form label from a filepath (no raw C:\ path shown) */
-function formLabel(filepath: string): string {
-  const base = filepath.split(/[/\\]/).pop() || filepath;
-  return base.replace(/\.[^.]+$/, "") || base;
+/** Official USCIS titles for APA-style references. */
+const FORM_TITLES: Record<string, string> = {
+  "I-129": "Instructions for Petition for a Nonimmigrant Worker",
+  "I-130": "Instructions for Petition for Alien Relative",
+  "I-130A": "Supplemental Information for Spouse Beneficiary",
+  "I-131": "Instructions for Application for Travel Document",
+  "I-140": "Instructions for Immigrant Petition for Alien Worker",
+  "I-485":
+    "Instructions for Application to Register Permanent Residence or Adjust Status",
+  "I-693":
+    "Instructions for Report of Immigration Medical Examination and Vaccination Record",
+  "I-765": "Instructions for Application for Employment Authorization",
+  "I-864": "Instructions for Affidavit of Support Under Section 213A of the INA",
+  "I-907": "Instructions for Request for Premium Processing Service",
+};
+
+/** Parse the USCIS form id from a URL/filepath ("i-485instr.pdf" -> "I-485"). */
+function formIdFrom(s: string): string | null {
+  const base = (s || "").split(/[/\\]/).pop() || "";
+  const m = base.toLowerCase().replace("instr", "").match(/([a-z]+)-?(\d+)([a-z]?)/);
+  return m ? `${m[1].toUpperCase()}-${m[2]}${m[3].toUpperCase()}` : null;
+}
+
+/** APA-style reference text for a citation (URL is rendered separately). */
+function apaReference(c: Citation): string {
+  const id = formIdFrom(c.source_url || c.filepath);
+  const title = (id && FORM_TITLES[id]) || "USCIS form instructions";
+  const formNote = id ? ` (Form ${id})` : "";
+  return `U.S. Citizenship and Immigration Services. (n.d.). ${title}${formNote}. U.S. Department of Homeland Security.`;
 }
 
 /** Convert markdown-like text to basic HTML for rendering */
@@ -56,7 +81,12 @@ export default function AnswerPanel({
   highlightedCitation,
   onCitationClick,
 }: AnswerPanelProps) {
-  const renderedAnswer = useMemo(() => renderMarkdown(answer), [answer]);
+  // Strip the model's own trailing "Sources" list (it echoes raw file paths);
+  // the panel renders proper APA citations below instead.
+  const renderedAnswer = useMemo(() => {
+    const cleaned = answer.replace(/\n+#{0,6}\s*sources?\b[\s\S]*$/i, "").trim();
+    return renderMarkdown(cleaned);
+  }, [answer]);
 
   return (
     <div className="glass-panel overflow-hidden">
@@ -90,8 +120,8 @@ export default function AnswerPanel({
       {/* Citations Footer */}
       {citations.length > 0 && (
         <div className="px-5 py-3 border-t border-[var(--color-border-primary)] space-y-2 bg-[var(--color-bg-glass)]">
-          <h3 className="docline">Sources</h3>
-          <div className="space-y-1 max-h-48 overflow-y-auto">
+          <h3 className="docline">Sources (APA)</h3>
+          <div className="space-y-2 max-h-80 overflow-y-auto">
             {citations.map((c, i) => (
               <div
                 key={c.chunk_id || i}
@@ -111,41 +141,26 @@ export default function AnswerPanel({
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div className="min-w-0">
-                  {(() => {
-                    const label = c.heading_path || formLabel(c.filepath);
-                    const href = c.page && c.source_url
-                      ? `${c.source_url}#page=${c.page}`
-                      : c.source_url;
-                    const inner = (
-                      <>
-                        {label}
-                        {c.page ? (
-                          <span className="font-mono text-[var(--color-text-muted)] not-italic">
-                            {" "}· p.{c.page}
-                          </span>
-                        ) : null}
-                      </>
-                    );
-                    return href ? (
+                  <p className="text-[13px] leading-snug text-[var(--color-text-secondary)]">
+                    {apaReference(c)}{" "}
+                    {c.source_url ? (
                       <a
-                        href={href}
+                        href={c.page ? `${c.source_url}#page=${c.page}` : c.source_url}
                         target="_blank"
                         rel="noopener"
                         onClick={(e) => e.stopPropagation()}
-                        className="text-[var(--color-accent-primary)] font-semibold truncate block hover:underline"
+                        className="text-[var(--color-accent-primary)] underline break-all"
                       >
-                        {inner}
-                        <span className="ml-1 text-[10px] align-baseline">↗</span>
+                        {c.source_url}
+                        {c.page ? `#page=${c.page}` : ""} ↗
                       </a>
-                    ) : (
-                      <p className="text-[var(--color-text-primary)] font-semibold truncate">
-                        {inner}
-                      </p>
-                    );
-                  })()}
-                  <p className="text-[var(--color-text-muted)] truncate mt-0.5 italic">
-                    {c.preview}
+                    ) : null}
                   </p>
+                  {c.heading_path ? (
+                    <p className="text-[var(--color-text-muted)] mt-1">
+                      Section: {c.heading_path}
+                    </p>
+                  ) : null}
                   <div className="flex items-center gap-2 mt-1.5">
                     <span
                       className={`px-1.5 py-0.5 text-[9px] font-mono uppercase tracking-wider border ${

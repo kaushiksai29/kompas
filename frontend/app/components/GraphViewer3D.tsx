@@ -55,31 +55,38 @@ export default function GraphViewer3D({ subgraph }: GraphViewer3DProps) {
   const graphData = useMemo(() => {
     const rawNodes = subgraph?.nodes || [];
     const rawEdges = subgraph?.edges || [];
-
     const nodeIds = new Set(rawNodes.map((n) => n.id));
 
-    const nodes = rawNodes.map((n) => {
-      const type = n.type || "unknown";
-      return {
-        id: n.id,
-        name: n.name || n.id,
-        type,
-        description: n.description || "",
-        color: TYPE_COLORS[type] || "#8a7d65",
-      };
-    });
-
-    // Cap links the same way the 2D board does (top-weighted) to keep the
-    // model legible in 3D.
     const links = [...rawEdges]
       .filter((e) => nodeIds.has(e.source) && nodeIds.has(e.target))
       .sort((a, b) => (b.weight || 0) - (a.weight || 0))
-      .slice(0, 60)
+      .slice(0, 80)
       .map((e) => ({
         source: e.source,
         target: e.target,
         predicate: (e.predicate || "").replace(/_/g, " "),
       }));
+
+    // Only keep nodes that actually connect to something — the floating
+    // singletons are what made the 3D view an unreadable dust cloud.
+    const connected = new Set<string>();
+    links.forEach((l) => {
+      connected.add(l.source as string);
+      connected.add(l.target as string);
+    });
+
+    const nodes = rawNodes
+      .filter((n) => connected.has(n.id))
+      .map((n) => {
+        const type = n.type || "unknown";
+        return {
+          id: n.id,
+          name: n.name || n.id,
+          type,
+          description: n.description || "",
+          color: TYPE_COLORS[type] || "#8a7d65",
+        };
+      });
 
     return { nodes, links };
   }, [subgraph]);
@@ -171,19 +178,23 @@ export default function GraphViewer3D({ subgraph }: GraphViewer3DProps) {
           showNavInfo={false}
           nodeLabel={nodeLabel as any}
           nodeColor={(n: any) => n.color}
-          nodeOpacity={0.95}
-          nodeResolution={16}
-          nodeRelSize={5}
+          nodeOpacity={1}
+          nodeResolution={20}
+          nodeRelSize={7}
+          nodeVal={3}
           linkLabel={linkLabel as any}
           linkColor={() => OXBLOOD}
-          linkOpacity={0.5}
-          linkWidth={1}
-          linkDirectionalArrowLength={3.5}
+          linkOpacity={0.7}
+          linkWidth={1.6}
+          linkDirectionalArrowLength={4}
           linkDirectionalArrowRelPos={1}
           linkDirectionalArrowColor={() => OXBLOOD}
           linkDirectionalParticles={1}
-          linkDirectionalParticleWidth={1.5}
+          linkDirectionalParticleWidth={2}
           linkDirectionalParticleColor={() => OXBLOOD}
+          warmupTicks={60}
+          cooldownTicks={120}
+          onEngineStop={() => fgRef.current?.zoomToFit?.(500, 60)}
         />
       </div>
 

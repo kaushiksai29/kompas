@@ -98,32 +98,18 @@ export default function Home() {
   return (
     <main className="min-h-screen flex flex-col">
       {/* ── Header ────────────────────────────────────────────── */}
-      <header className="reveal reveal-1 px-6 py-5 border-b-2 border-[var(--color-border-primary)]">
+      <header className="reveal reveal-1 px-4 sm:px-6 py-4 sm:py-5 border-b-2 border-[var(--color-border-primary)]">
         <div className="max-w-7xl mx-auto flex items-end justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 flex items-center justify-center shrink-0 text-[var(--color-accent-primary)]">
-              {/* Compass mark — matches the light KOMPAS logo */}
-              <svg viewBox="0 0 48 48" className="w-10 h-10" fill="none" aria-hidden>
-                <circle cx="24" cy="24" r="21" stroke="currentColor" strokeWidth="1.4" />
-                {Array.from({ length: 12 }).map((_, i) => {
-                  const a = (i * 30 * Math.PI) / 180;
-                  const r1 = i % 3 === 0 ? 16.5 : 18;
-                  return (
-                    <line
-                      key={i}
-                      x1={24 + r1 * Math.sin(a)}
-                      y1={24 - r1 * Math.cos(a)}
-                      x2={24 + 20.5 * Math.sin(a)}
-                      y2={24 - 20.5 * Math.cos(a)}
-                      stroke="currentColor"
-                      strokeWidth={i % 3 === 0 ? 1.3 : 0.7}
-                    />
-                  );
-                })}
-                <polygon points="24,8 26.4,24 24,40 21.6,24" fill="currentColor" />
-                <circle cx="24" cy="24" r="2.4" fill="var(--color-bg-secondary)" stroke="currentColor" strokeWidth="1.2" />
-              </svg>
-            </div>
+            {/* KOMPAS compass mark */}
+            <img
+              src="/kompas-mark.png"
+              alt="KOMPAS compass"
+              width={44}
+              height={44}
+              className="w-11 h-11 shrink-0"
+              style={{ mixBlendMode: "multiply" }}
+            />
             <div>
               <h1 className="wordmark text-[26px] leading-none tracking-[0.06em]">
                 KOMPAS
@@ -158,7 +144,7 @@ export default function Home() {
       </header>
 
       {/* ── Main Content ──────────────────────────────────────── */}
-      <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-6 py-6 gap-6">
+      <div className="flex-1 flex flex-col max-w-7xl mx-auto w-full px-4 sm:px-6 py-5 sm:py-6 gap-6">
         {/* Query Input */}
         <div className="reveal reveal-2">
           <QueryPanel onSubmit={handleQuery} loading={loading} />
@@ -233,7 +219,7 @@ export default function Home() {
         {!result && !loading && !error && (
           <div className="reveal reveal-3 flex-1 flex items-center justify-center py-14">
             <div className="max-w-2xl w-full">
-              <div className="paper-panel px-8 py-9">
+              <div className="paper-panel px-5 sm:px-8 py-7 sm:py-9">
                 <p className="docline">Start here</p>
                 <h2 className="wordmark text-2xl mt-3 leading-tight">
                   Find the right forms, and what they require.

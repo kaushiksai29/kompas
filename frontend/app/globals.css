@@ -45,8 +45,8 @@ body {
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
-  font-size: 15px;
-  line-height: 1.55;
+  font-size: 16px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
 /* No texture. No top rule. Plain. */
@@ -85,8 +85,8 @@ body {
 /* Small mono label — precise, technical, quiet. */
 .docline {
   font-family: var(--font-mono);
-  font-size: 0.66rem;
-  letter-spacing: 0.13em;
+  font-size: 0.72rem;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
   color: var(--color-text-muted);
 }
@@ -179,7 +179,7 @@ body {
   font-size: 0.95rem; font-weight: 600;
   margin: 1.1rem 0 0.4rem; color: var(--color-text-primary);
 }
-.answer-content p { margin-bottom: 0.8rem; line-height: 1.65; font-size: 0.95rem; }
+.answer-content p { margin-bottom: 0.85rem; line-height: 1.7; font-size: 1rem; }
 .answer-content ul { list-style: none; padding-left: 0.1rem; margin-bottom: 0.8rem; }
 .answer-content li {
   margin-bottom: 0.35rem; line-height: 1.55; padding-left: 1rem; position: relative;
