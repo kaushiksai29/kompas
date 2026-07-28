@@ -139,6 +139,47 @@ def judge_accuracy(question: str, gold_forms, generated_answer: str, client) -> 
     return _parse_score(raw)
 
 
+# ── Refusal probes: questions OUTSIDE the ingested corpus. A trustworthy
+# system declines ("the sources don't cover this") instead of inventing.
+REFUSAL_PROBES = [
+    "How do I apply for asylum in the United States?",
+    "What is the fee for the U.S. citizenship (N-400) test?",
+    "How do I renew my U.S. passport?",
+    "What are the income tax filing requirements for a nonresident alien?",
+    "How do I sponsor a refugee for resettlement?",
+    "What is the current visa bulletin priority date for EB-2 India?",
+]
+
+_REFUSAL_RE = re.compile(
+    r"(could\s*n[o']?t find|cannot (?:find|answer)|do(?:es)? not (?:contain|cover|include|mention|have)"
+    r"|not (?:enough|sufficient) (?:information|detail)|no (?:relevant )?information"
+    r"|not (?:covered|addressed|present|available|found)|sources? (?:do|does) not"
+    r"|unable to (?:find|answer)|do(?:es)?n'?t (?:contain|cover|have enough)"
+    r"|outside (?:the|its|my) (?:scope|sources|knowledge))",
+    re.IGNORECASE,
+)
+
+
+def is_refusal(text: str) -> bool:
+    """True if the answer correctly declines (says the sources don't cover it)."""
+    return bool(_REFUSAL_RE.search(text or ""))
+
+
+def run_refusal(retriever, client, top_k, hops):
+    """Score out-of-corpus questions: correct = declines instead of hallucinating."""
+    rows = []
+    for q in REFUSAL_PROBES:
+        res = retriever.retrieve(
+            q, top_k_vector=top_k, top_k_graph=top_k, graph_hops=hops, use_graph=True
+        )
+        gen = generate_answer(q, res.merged_chunks, client, subgraph=res.subgraph)
+        refused = is_refusal(gen.get("answer", ""))
+        rows.append({"query": q, "refused": refused})
+        print(f"  refusal {'OK  ' if refused else 'MISS'}  {q[:58]}", flush=True)
+    rate = sum(1 for r in rows if r["refused"]) / max(len(rows), 1)
+    return rate, rows
+
+
 def evaluate(retriever: HybridRetriever, client, questions, top_k: int, hops: int):
     rows = []
     for i, q in enumerate(questions):
@@ -166,12 +207,20 @@ def evaluate(retriever: HybridRetriever, client, questions, top_k: int, hops: in
 
             judge = judge_accuracy(q["question"], gold, answer, client)
 
+            # Graph-only contribution: share of retrieved context reached ONLY
+            # via the structural (graph) channel. 0 for naive by construction —
+            # a direct measure that the graph is actually pulling its weight.
+            graph_share = _frac(
+                sum(1 for c in chunks if c.get("retrieval_source") == "graph"),
+                len(chunks),
+            )
             per_mode[mode] = {
                 "retrieval_recall": _frac(len(gold & retrieved_forms), len(gold)),
                 "doc_recall": _frac(len(gold & retrieved_docs), len(gold)),
                 "answer_recall": _frac(len(gold & answer_forms), len(gold)),
                 "citation_precision": _frac(cite_hits, len(cite_docs)),
                 "judge_accuracy": judge,
+                "graph_share": graph_share,
                 "n_graph_chunks": len(res.graph_chunks),
                 "subgraph_nodes": len(res.subgraph["nodes"]),
             }
@@ -187,7 +236,7 @@ def evaluate(retriever: HybridRetriever, client, questions, top_k: int, hops: in
 
 def aggregate(rows):
     metrics = ["retrieval_recall", "doc_recall", "answer_recall",
-               "citation_precision", "judge_accuracy"]
+               "citation_precision", "judge_accuracy", "graph_share"]
     agg = {m: {"hybrid": 0.0, "naive": 0.0} for m in metrics}
     for r in rows:
         for m in metrics:
@@ -217,6 +266,7 @@ def render_md(agg, metrics, rows, top_k, hops) -> str:
         "answer_recall": "Answer accuracy (gold forms in answer)",
         "citation_precision": "Citation precision (citations on gold docs)",
         "judge_accuracy": "LLM-judge accuracy (0-1, answers question + forms)",
+        "graph_share": "Graph-only share of retrieved context",
     }
     for m in metrics:
         nv, hy = agg[m]["naive"], agg[m]["hybrid"]
@@ -262,9 +312,21 @@ def main() -> int:
     agg, metrics = aggregate(rows)
     md = render_md(agg, metrics, rows, args.top_k, args.hops)
 
+    print("\nRefusal probes (out-of-corpus; the system should decline) ...")
+    refusal_rate, refusal_rows = run_refusal(retriever, client, args.top_k, args.hops)
+    n_ref = sum(1 for r in refusal_rows if r["refused"])
+    md += (
+        f"\n### Refusal correctness (out-of-corpus)\n\n"
+        f"Given {len(refusal_rows)} questions outside the ingested corpus, the system "
+        f"correctly declined **{refusal_rate:.0%}** of the time "
+        f"({n_ref}/{len(refusal_rows)}) instead of inventing an answer.\n"
+    )
+
     RESULTS_JSON.write_text(json.dumps(
         {"settings": {"top_k": args.top_k, "hops": args.hops},
-         "aggregate": agg, "rows": rows}, indent=2), encoding="utf-8")
+         "aggregate": agg, "rows": rows,
+         "refusal": {"rate": refusal_rate, "rows": refusal_rows}}, indent=2),
+        encoding="utf-8")
     RESULTS_MD.write_text(md, encoding="utf-8")
 
     print(f"\nDone in {time.time() - t0:.0f}s.\n")
