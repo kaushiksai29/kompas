@@ -45,6 +45,43 @@ FORMS: dict[str, dict] = {
     "i-140":  {"label": "Immigrant Petition for Alien Worker",                            "pathways": ["employment"]},
     "i-907":  {"label": "Request for Premium Processing Service",                         "pathways": ["employment"]},
     "i-129":  {"label": "Petition for a Nonimmigrant Worker (H-1B etc.)",                 "pathways": ["employment"]},
+
+    # ── Naturalization / citizenship ─────────────────────────────────────────
+    "n-400":  {"label": "Application for Naturalization",                                 "pathways": ["naturalization"]},
+    "n-600":  {"label": "Application for Certificate of Citizenship",                     "pathways": ["naturalization"]},
+    "n-565":  {"label": "Replacement Naturalization/Citizenship Document",                "pathways": ["naturalization"]},
+
+    # ── Maintaining / renewing status ────────────────────────────────────────
+    "i-751":  {"label": "Petition to Remove Conditions on Residence",                     "pathways": ["family"]},
+    "i-90":   {"label": "Application to Replace Permanent Resident Card",                 "pathways": ["family", "employment"]},
+    "i-102":  {"label": "Replacement/Initial Arrival-Departure Document",                 "pathways": ["family", "employment"]},
+    "ar-11":  {"label": "Change of Address",                                              "pathways": ["family", "employment"], "no_instr": True},
+
+    # ── Fiance / financial support ───────────────────────────────────────────
+    "i-129f": {"label": "Petition for Alien Fiance(e)",                                   "pathways": ["family"]},
+    "i-134":  {"label": "Declaration of Financial Support",                               "pathways": ["family"]},
+    "i-864a": {"label": "Contract Between Sponsor and Household Member",                  "pathways": ["family"]},
+    "i-864ez":{"label": "Affidavit of Support Under Section 213A (EZ)",                   "pathways": ["family"]},
+    "i-864w": {"label": "Request for Exemption for Affidavit of Support",                 "pathways": ["family"]},
+
+    # ── Access / affordability (critical for low-income filers) ──────────────
+    "i-912":  {"label": "Request for Fee Waiver",                                         "pathways": ["access"]},
+    "g-28":   {"label": "Notice of Entry of Appearance as Attorney or Representative",    "pathways": ["access"]},
+    "g-1145": {"label": "e-Notification of Application/Petition Acceptance",              "pathways": ["access"], "no_instr": True},
+
+    # ── Waivers / inadmissibility (people who are stuck) ─────────────────────
+    "i-601":  {"label": "Application for Waiver of Grounds of Inadmissibility",           "pathways": ["waiver"]},
+    "i-601a": {"label": "Application for Provisional Unlawful Presence Waiver",           "pathways": ["waiver"]},
+    "i-212":  {"label": "Permission to Reapply for Admission After Removal",              "pathways": ["waiver"]},
+
+    # ── Humanitarian ─────────────────────────────────────────────────────────
+    "i-589":  {"label": "Application for Asylum and for Withholding of Removal",          "pathways": ["humanitarian"]},
+    "i-360":  {"label": "Petition for Amerasian, Widow(er), or Special Immigrant (VAWA)", "pathways": ["humanitarian"]},
+    "i-918":  {"label": "Petition for U Nonimmigrant Status (crime victims)",             "pathways": ["humanitarian"]},
+    "i-914":  {"label": "Application for T Nonimmigrant Status (trafficking victims)",    "pathways": ["humanitarian"]},
+    "i-821":  {"label": "Application for Temporary Protected Status",                     "pathways": ["humanitarian"]},
+    "i-821d": {"label": "Deferred Action for Childhood Arrivals (DACA)",                  "pathways": ["humanitarian"]},
+    "i-824":  {"label": "Action on an Approved Application or Petition",                  "pathways": ["family", "employment"]},
 }
 
 UA = {"User-Agent": "Mozilla/5.0 (compatible; GraphRAG-corpus-fetch/1.0)"}

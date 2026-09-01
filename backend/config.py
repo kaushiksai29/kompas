@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     # ── Model identifiers ─────────────────────────────────────────────────
     groq_model: str = Field(
-        default="llama-3.3-70b-versatile",
+        default="openai/gpt-oss-120b",
         description="Model name for Groq inference",
     )
     cerebras_model: str = Field(
