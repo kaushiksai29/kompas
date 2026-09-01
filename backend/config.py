@@ -29,7 +29,7 @@ class Settings(BaseSettings):
 
     # ── Model identifiers ─────────────────────────────────────────────────
     groq_model: str = Field(
-        default="meta-llama/llama-4-scout-17b-16e-instruct",
+        default="llama-3.3-70b-versatile",
         description="Model name for Groq inference",
     )
     cerebras_model: str = Field(
@@ -37,7 +37,7 @@ class Settings(BaseSettings):
         description="Model name for Cerebras inference",
     )
     gemini_model: str = Field(
-        default="gemini-2.5-flash",
+        default="gemini-flash-latest",
         description="Model name for Gemini inference",
     )
 

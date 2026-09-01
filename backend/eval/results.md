@@ -4,18 +4,24 @@ Corpus: USCIS immigration form instructions. Questions: **28** (hand-built, mult
 
 | Metric | Naive RAG | Hybrid GraphRAG | Δ (Hybrid − Naive) |
 |---|---:|---:|---:|
-| Retrieval recall@k (gold forms in context) | 0.818 | 0.908 | +0.089 |
-| Source-doc recall (gold form's doc retrieved) | 0.780 | 0.810 | +0.030 |
-| Answer accuracy (gold forms in answer) | 0.890 | 0.961 | +0.071 |
-| Citation precision (citations on gold docs) | 0.701 | 0.674 | -0.027 |
-| LLM-judge accuracy (0-1, answers question + forms) | 0.852 | 0.909 | +0.057 |
+| Retrieval recall@k (gold forms in context) | 0.827 | 0.943 | +0.116 |
+| Source-doc recall (gold form's doc retrieved) | 0.789 | 0.845 | +0.057 |
+| Answer accuracy (gold forms in answer) | 0.902 | 0.967 | +0.065 |
+| Citation precision (citations on gold docs) | 0.710 | 0.723 | +0.013 |
+| LLM-judge accuracy (0-1, answers question + forms) | 0.845 | 0.889 | +0.044 |
+| Graph-only share of retrieved context | 0.000 | 0.500 | +0.500 |
 
 ### Multi-hop subset (20 questions)
 
 | Metric | Naive | Hybrid | Δ |
 |---|---:|---:|---:|
-| Retrieval recall@k (gold forms in context) | 0.796 | 0.921 | +0.125 |
-| Source-doc recall (gold form's doc retrieved) | 0.742 | 0.783 | +0.042 |
-| Answer accuracy (gold forms in answer) | 0.846 | 0.946 | +0.100 |
-| Citation precision (citations on gold docs) | 0.775 | 0.744 | -0.031 |
-| LLM-judge accuracy (0-1, answers question + forms) | 0.823 | 0.893 | +0.070 |
+| Retrieval recall@k (gold forms in context) | 0.808 | 0.921 | +0.113 |
+| Source-doc recall (gold form's doc retrieved) | 0.754 | 0.833 | +0.079 |
+| Answer accuracy (gold forms in answer) | 0.863 | 0.954 | +0.092 |
+| Citation precision (citations on gold docs) | 0.787 | 0.825 | +0.037 |
+| LLM-judge accuracy (0-1, answers question + forms) | 0.803 | 0.880 | +0.077 |
+| Graph-only share of retrieved context | 0.000 | 0.500 | +0.500 |
+
+### Refusal correctness (out-of-corpus)
+
+Given 6 questions outside the ingested corpus, the system correctly declined **83%** of the time (5/6) instead of inventing an answer.

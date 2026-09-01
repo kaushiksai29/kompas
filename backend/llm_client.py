@@ -22,6 +22,8 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+import os
+import time
 from abc import ABC, abstractmethod
 from typing import Any, Sequence
 
@@ -268,6 +270,11 @@ class FallbackLLMClient(LLMProvider):
             raise ValueError("At least one LLM provider is required")
         self._providers: list[LLMProvider] = list(providers)
         self._max_retries = max_retries
+        # Optional client-side throttle (seconds between calls). Set
+        # LLM_MIN_INTERVAL to pace bursty workloads (e.g. eval) under a
+        # provider's per-minute rate limit. 0 = disabled (default).
+        self._min_interval = float(os.getenv("LLM_MIN_INTERVAL", "0") or 0)
+        self._last_call = 0.0
 
     @property
     def name(self) -> str:
@@ -287,6 +294,13 @@ class FallbackLLMClient(LLMProvider):
         non-rate-limit error (e.g. a misconfigured model) skips to the next
         provider instead of crashing the whole request.
         """
+        # Client-side pacing to respect per-minute rate limits.
+        if self._min_interval > 0:
+            wait = self._min_interval - (time.monotonic() - self._last_call)
+            if wait > 0:
+                await asyncio.sleep(wait)
+            self._last_call = time.monotonic()
+
         last_exc: Exception | None = None
         for provider in self._providers:
             delay = 2.0
