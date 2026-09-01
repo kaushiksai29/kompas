@@ -251,7 +251,7 @@ _TAX_FORM_RE = re.compile(
 
 def _is_gov_form_token(name: str) -> bool:
     """True if `name` contains a real USCIS/government form number (I-/N-/G-/DS-/ETA-/AR-)."""
-    return _FORM_RE.search(name) is not None
+    return _FORM_RE.search(name.translate(_DASH_MAP)) is not None
 
 
 def _is_visa_class(name: str) -> bool:
@@ -264,9 +264,14 @@ def _is_tax_form(name: str) -> bool:
     return _TAX_FORM_RE.search(name) is not None
 
 
+# LLMs frequently emit "Form I‑485" with a Unicode non-breaking hyphen. Without
+# folding these to ASCII "-", the same form becomes two distinct graph nodes.
+_DASH_MAP = dict.fromkeys(map(ord, "‐‑‒–—−"), "-")
+
+
 def canonicalize_name(name: str, entity_type: str) -> str:
     """Normalize an entity name for stable, cross-document dedup."""
-    n = " ".join(name.strip().split())
+    n = " ".join(name.translate(_DASH_MAP).strip().split())
     if entity_type == EntityType.FORM.value:
         m = _FORM_RE.search(n)
         if m:

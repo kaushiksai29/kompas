@@ -52,8 +52,18 @@ _FORM_IN_TEXT = re.compile(r"\b([A-Z]{1,3}-\d{2,4}[A-Z]?)\b")
 _FORM_IN_FILE = re.compile(r"([a-z]{1,3})-?(\d{2,4})([a-z]?)", re.IGNORECASE)
 
 
+# Models often emit form numbers with a Unicode non-breaking hyphen (U+2011)
+# or en/em dash rather than ASCII "-". Normalize before matching, otherwise
+# a perfectly correct answer scores zero.
+_DASHES = dict.fromkeys(map(ord, "‐‑‒–—−"), "-")
+
+
+def normalize_dashes(text: str) -> str:
+    return (text or "").translate(_DASHES)
+
+
 def forms_in_text(text: str) -> set[str]:
-    return {m.upper() for m in _FORM_IN_TEXT.findall(text or "")}
+    return {m.upper() for m in _FORM_IN_TEXT.findall(normalize_dashes(text))}
 
 
 def form_of_filepath(fp: str) -> str | None:
@@ -141,13 +151,18 @@ def judge_accuracy(question: str, gold_forms, generated_answer: str, client) -> 
 
 # ── Refusal probes: questions OUTSIDE the ingested corpus. A trustworthy
 # system declines ("the sources don't cover this") instead of inventing.
+# NOTE: these must stay genuinely OUTSIDE the ingested corpus. When the corpus
+# grew to 35 forms it absorbed asylum (I-589) and naturalization (N-400), so the
+# original asylum/N-400 probes became in-corpus questions and "refusing" them
+# would have been the wrong behaviour. These probes target other agencies (State
+# Dept, EOIR, IRS, DMV) and live operational data that form instructions never contain.
 REFUSAL_PROBES = [
-    "How do I apply for asylum in the United States?",
-    "What is the fee for the U.S. citizenship (N-400) test?",
     "How do I renew my U.S. passport?",
-    "What are the income tax filing requirements for a nonresident alien?",
-    "How do I sponsor a refugee for resettlement?",
     "What is the current visa bulletin priority date for EB-2 India?",
+    "How do I appeal to the Board of Immigration Appeals after a denial?",
+    "What are the current USCIS processing times at the Texas Service Center?",
+    "How do I get a driver's license as a new immigrant?",
+    "How do I find a pro bono immigration attorney in my city?",
 ]
 
 _REFUSAL_RE = re.compile(
